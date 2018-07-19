@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect } from '@ngrx/effects';
 import { Store, Action, ActionReducer } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { defer } from 'rxjs/observable/defer'
+import { Observable, of, defer } from 'rxjs';
 
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
@@ -82,11 +81,10 @@ export class StorageSyncEffects {
       .map(state => ({
         type: StorageSyncActions.HYDRATED,
         payload: state
-      }))
-      .catch(e => {
+      })).catch(e => {
         console.warn(`error fetching data from store for hydration: ${e}`);
 
-        return Observable.of({
+        return of({
           type: StorageSyncActions.HYDRATED,
           payload: {}
         });
